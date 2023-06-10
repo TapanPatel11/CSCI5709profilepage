@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import DialogPopOver from './DialogPopOver';
+import {Link, Routes, Route, useNavigate} from 'react-router-dom';
+import { TextField, Button, Grid, Box } from '@mui/material';
+import { AccountCircle, Email, Lock } from '@mui/icons-material';
 
+// import { useHistory } from 'react-router-dom';
 const RegistrationForm = () => {
+
+    const navigeteToProfilePage = useNavigate();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,66 +38,102 @@ const RegistrationForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform registration logic here
+    console.log(event);
+
+    navigeteToProfilePage(`/profilePage/${firstName}/${lastName}/${email}`);
+    // Redirect to profile page
   };
 
   return (
+    <div>     <h1>Registration Page</h1>
     <form onSubmit={handleSubmit}>
-        <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-      <TextField
-        label="First Name"
-        value={firstName}
-        onChange={handleFirstNameChange}
-        required
-        inputProps={{ pattern: '[A-Za-z]+' }}
-      />
-
-      <TextField
-        label="Last Name"
-        value={lastName}
-        onChange={handleLastNameChange}
-        required
-        inputProps={{ pattern: '[A-Za-z]+' }}
-      />
-
-      <TextField
-        label="Email"
-        type="email"
-        value={email}
-        onChange={handleEmailChange}
-        fullWidth
-        required
-      />
-
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-        fullWidth
-        required
-        inputProps={{ minLength: 8 }}
-      />
-
-      <TextField
-        label="Confirm Password"
-        type="password"
-        value={confirmPassword}
-        onChange={handleConfirmPasswordChange}
-        fullWidth
-        required
-        inputProps={{ minLength: 8, pattern: password }}
-      />
-
-      <Button type="submit" variant="contained" color="primary">
-        Register
-      </Button>
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="First Name"
+            value={firstName}
+            onChange={handleFirstNameChange}
+            required
+            inputProps={{ pattern: '[A-Za-z]+' }}
+            fullWidth
+            size="small"
+            margin="normal"
+            InputProps={{
+              startAdornment: <AccountCircle />,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Last Name"
+            value={lastName}
+            onChange={handleLastNameChange}
+            required
+            inputProps={{ pattern: '[A-Za-z]+' }}
+            fullWidth
+            size="small"
+            margin="normal"
+            InputProps={{
+              startAdornment: <AccountCircle />,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            required
+            fullWidth
+            size="small"
+            margin="normal"
+            InputProps={{
+              startAdornment: <Email />,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+            fullWidth
+            size="small"
+            margin="normal"
+            InputProps={{
+              startAdornment: <Lock />,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            required
+            fullWidth
+            size="small"
+            margin="normal"
+            InputProps={{
+              startAdornment: <Lock />,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary">
+            Register
+          </Button>
+        </Grid>
+      </Grid>
     </form>
+    </div>
+
+       
+     
   );
 };
 
