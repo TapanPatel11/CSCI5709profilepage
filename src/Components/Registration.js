@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import DialogPopOver from './DialogPopOver';
 import {Link, Routes, Route, useNavigate} from 'react-router-dom';
 import { TextField, Button, Grid, Box } from '@mui/material';
 import { AccountCircle, Email, Lock } from '@mui/icons-material';
 
-// import { useHistory } from 'react-router-dom';
 const RegistrationForm = () => {
 
-    const navigeteToProfilePage = useNavigate();
-
+  const navigeteToProfilePage = useNavigate();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -37,16 +35,18 @@ const RegistrationForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform registration logic here
     console.log(event);
-
-    navigeteToProfilePage(`/profilePage/${firstName}/${lastName}/${email}`);
-    // Redirect to profile page
-  };
+    if (password !== confirmPassword) {
+      setPasswordError(true);
+    } else {
+      navigeteToProfilePage(`/profilePage/${firstName}/${lastName}/${email}`);
+    }
+    };
 
   return (
-    <div>     <h1>Registration Page</h1>
-    <form onSubmit={handleSubmit}>
+    <div>    
+    <form onSubmit={handleSubmit} >
+       <h1>Registration Page</h1>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} sm={6}>
           <TextField
@@ -103,6 +103,9 @@ const RegistrationForm = () => {
             fullWidth
             size="small"
             margin="normal"
+            inputProps={{
+    pattern: "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
+  }}
             InputProps={{
               startAdornment: <Lock />,
             }}
@@ -118,13 +121,18 @@ const RegistrationForm = () => {
             fullWidth
             size="small"
             margin="normal"
+            helperText={passwordError ? "Passwords do not match" : ""}
+            error={passwordError}
+            inputProps={{
+              pattern: "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
+            }}
             InputProps={{
               startAdornment: <Lock />,
             }}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit"  variant="contained" color="primary">
             Register
           </Button>
         </Grid>
